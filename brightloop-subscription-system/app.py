@@ -433,40 +433,86 @@ def update_invoice_payment_status(invoice):
         invoice.status = "Confirmed"
 
 
+
 def run_billing_cycle():
     today = date.today()
     processed = 0
     closed = 0
-    # A configured pause is temporary: restore the subscription when its resume date arrives.
+
+    # Automatically resume subscriptions whose pause date has arrived.
     expired_pauses = Subscription.query.filter_by(status="Paused").filter(
         Subscription.paused_until <= today
     ).all()
+
     for paused in expired_pauses:
         paused.status = "Active"
         paused.paused_until = None
+
         if paused.next_billing_date and paused.next_billing_date < today:
             paused.next_billing_date = today
-    subscriptions = Subscription.query.options(
-        joinedload(Subscription.plan), joinedload(Subscription.discount),
-        selectinload(Subscription.lines).joinedload(SubscriptionLine.tax_rule)
-    ).filter_by(status="Active").filter(Subscription.next_billing_date <= today).all()
+
+    # Include subscriptions that are due for billing OR have expired
+    # and need automatic closure.
+    subscriptions = (
+        Subscription.query
+        .join(Plan, Subscription.plan_id == Plan.id)
+        .options(
+            joinedload(Subscription.plan),
+            joinedload(Subscription.discount),
+            selectinload(Subscription.lines).joinedload(
+                SubscriptionLine.tax_rule
+            )
+        )
+        .filter(Subscription.status == "Active")
+        .filter(
+            or_(
+                Subscription.next_billing_date <= today,
+                Subscription.next_billing_date.is_(None),
+                (
+                    (Subscription.expiry_date < today) &
+                    (Plan.auto_close.is_(True))
+                )
+            )
+        )
+        .all()
+    )
+
     for sub in subscriptions:
-        if sub.expiry_date and sub.expiry_date < today and sub.plan.auto_close:
-            sub.status = "Closed"
-            sub.closed_at = datetime.utcnow()
-            closed += 1
+
+        # Close expired subscriptions when auto-close is enabled.
+        if sub.expiry_date and sub.expiry_date < today:
+            if sub.plan.auto_close:
+                sub.status = "Closed"
+                sub.closed_at = datetime.utcnow()
+                closed += 1
+
+            # Do not generate invoices after expiry.
             continue
+
+        # Skip subscriptions that are still paused.
         if sub.paused_until and sub.paused_until > today:
             continue
-        if sub.expiry_date and sub.expiry_date < today:
-            continue
+
         billing_date = sub.next_billing_date or sub.start_date
+
+        if billing_date > today:
+            continue
+
         invoice = build_invoice(sub, billing_date, today)
+
         if invoice:
-            sub.next_billing_date = next_period(billing_date, sub.plan.frequency)
+            sub.next_billing_date = next_period(
+                billing_date,
+                sub.plan.frequency
+            )
             processed += 1
+
     db.session.commit()
-    return {"created": processed, "auto_closed": closed}
+
+    return {
+        "created": processed,
+        "auto_closed": closed
+    }
 
 
 @app.errorhandler(ValueError)
@@ -1452,8 +1498,7 @@ def reports():
 def seed_data():
     seed_demo = os.getenv("SEED_DEMO_DATA", "true").lower() == "true"
     # Keep the advertised demo admin credentials synchronized on every startup.
-    # Find by email (case-insensitive) so an older seeded account cannot retain
-    # a stale password and cause the login page to reject the demo credentials.
+       # Create administrator only if an account does not already exist.
     admin_email = os.getenv("SEED_ADMIN_EMAIL", "admin@brightloop.test").strip().lower()
     admin_password = os.getenv("SEED_ADMIN_PASSWORD", "ChangeMe@12345")
     admin = User.query.filter(func.lower(User.email) == admin_email).first()
@@ -1467,10 +1512,9 @@ def seed_data():
             is_active=True,
         )
         db.session.add(admin)
-    else:
-        admin.password_hash = generate_password_hash(admin_password)
-        admin.role = "admin"
-        admin.is_active = True
+
+    # Do not change an existing administrator's password on startup.
+   
     if seed_demo and Product.query.count() == 0:
         crm = Product(name="Brightloop CRM", product_type="Business Software",
                       sales_price=Decimal("2499.00"), cost_price=Decimal("700.00"),

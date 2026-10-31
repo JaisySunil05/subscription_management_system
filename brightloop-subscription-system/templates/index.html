@@ -4,57 +4,47 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <meta name="theme-color" content="#080d19">
+  <meta name="theme-color" content="#FFC400">
   <title>Brightloop — Subscription Management</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Login theme (white + yellow). Must load after styles.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-theme.css') }}">
 </head>
 <body>
 
-  <!-- Authentication: login, registration and password reset are rendered by app.js -->
+  <!-- Authentication: login, registration and password reset forms are rendered by app.js -->
   <div id="auth-view" class="auth-layout">
     <section class="auth-brand-panel">
-      <div class="auth-grid-glow" aria-hidden="true"></div>
-      <div class="auth-orb auth-orb-one" aria-hidden="true"></div>
-      <div class="auth-orb auth-orb-two" aria-hidden="true"></div>
+      <div class="fx-blob fx-b1"></div><div class="fx-blob fx-b2"></div><div class="fx-blob fx-b3"></div><div class="fx-ring"></div>
 
       <div class="brand-lockup light-brand">
-        <span class="brand-mark">B</span>
+        <svg class="fx-logo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="#241C00" stroke-width="5" stroke-dasharray="70 24" stroke-linecap="round"/><circle cx="20" cy="5" r="4" fill="#fff" stroke="#241C00" stroke-width="2.5"/></svg>
         <span>brightloop</span>
       </div>
 
       <div class="auth-brand-copy">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> SUBSCRIPTION OPERATIONS, SIMPLIFIED</div>
-        <h1>Every plan.<br>Every payment.<br><span>One clear view.</span></h1>
+        <h1>Every plan. Every payment. One clear view.</h1>
         <p>Manage subscriptions, recurring billing and customer relationships from one connected workspace.</p>
-
-        <div class="auth-feature-row">
-          <div class="auth-feature">
-            <span class="auth-feature-icon">↻</span>
-            <span><strong>Recurring billing</strong><small>On schedule, every time</small></span>
-          </div>
-          <div class="auth-feature">
-            <span class="auth-feature-icon">⌁</span>
-            <span><strong>Clear insights</strong><small>Your business in focus</small></span>
-          </div>
-        </div>
-
-        <div class="auth-status-card">
-          <span class="status-pulse"></span>
-          <span><strong>One workspace.</strong> Complete subscription control.</span>
-          <span class="auth-status-arrow">↗</span>
-        </div>
       </div>
 
-      <div class="brand-footer">BRIGHTLOOP SOFTWARE <span>•</span> BILLING WORKSPACE</div>
+      <div class="fx-stage" id="fx-stage" aria-hidden="true">
+        <div class="fx-inv"><b>INV-0412 · Aarav Traders</b><div><strong>₹2,949</strong><span class="fx-pill draft" data-pill>Draft</span></div></div>
+        <div class="fx-inv"><b>INV-0413 · Kerala Spice Co.</b><div><strong>₹29,488</strong><span class="fx-pill confirmed" data-pill>Confirmed</span></div></div>
+        <div class="fx-inv"><b>INV-0414 · Northwind Labs</b><div><strong>₹7,080</strong><span class="fx-pill paid" data-pill>Paid</span></div></div>
+      </div>
+
+      <div class="fx-stats">
+        <div><span data-count="184200" data-prefix="₹">₹0</span>monthly recurring revenue</div>
+        <div><span data-count="236">0</span>active subscriptions</div>
+      </div>
     </section>
 
     <section class="auth-form-panel">
-      <div class="auth-panel-glow" aria-hidden="true"></div>
       <div class="auth-form-wrap" id="auth-form-wrap"></div>
     </section>
   </div>
@@ -115,5 +105,7 @@
   <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
   <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  <!-- Login animations and password checklist. Loads after app.js -->
+  <script src="{{ url_for('static', filename='js/auth-fx.js') }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,104 @@
+/* Brightloop login theme: white + yellow.
+   Loads AFTER styles.css and overrides only what lives inside #auth-view.
+   Selectors match styles.css: .auth-form-wrap, .auth-form, .field, .btn-primary,
+   .auth-subtitle, .auth-footnote, .text-button, .demo-box */
+
+#auth-view{--y:#FFC400;--y2:#FFE066;--y3:#FFF6CC;--ink:#241C00;--mute:#7A6F4A;--line:#EFE5B8;--ok:#2E9E5B;--bad:#D63A2F;--r:14px;
+  color-scheme:light;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink)}
+#auth-view:not(.hidden){grid-template-columns:1.05fr 1fr;background:#fff}
+#auth-view :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* ---------------- left hero ---------------- */
+#auth-view .auth-brand-panel{gap:12px;padding:48px 56px;color:var(--ink);border-right:0;
+  background:linear-gradient(160deg,var(--y2),var(--y))}
+#auth-view .auth-brand-panel::before,#auth-view .auth-brand-panel::after{content:none}   /* remove old dark grid + rings */
+#auth-view .brand-lockup{gap:10px;font:800 22px 'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:0;color:var(--ink);position:relative;z-index:3}
+#auth-view .fx-logo{width:34px;height:34px;animation:fx-spin 9s linear infinite}
+#auth-view .auth-brand-copy{max-width:none;margin:0;padding:20px 0 0;z-index:3}
+#auth-view .auth-brand-copy h1{margin:0;max-width:11em;font:800 clamp(32px,3.6vw,52px)/1.04 'Bricolage Grotesque',sans-serif;letter-spacing:-1.2px;color:var(--ink)}
+#auth-view .auth-brand-copy p{margin:14px 0 0;max-width:30em;font-size:17px;line-height:1.5;color:#4a3d00}
+
+.fx-blob{position:absolute;border-radius:50%;background:#fff;opacity:.35;animation:fx-drift 14s ease-in-out infinite alternate;pointer-events:none}
+.fx-b1{width:340px;height:340px;right:-90px;top:-80px}
+.fx-b2{width:200px;height:200px;left:-60px;bottom:90px;animation-duration:18s;opacity:.25}
+.fx-b3{width:90px;height:90px;right:22%;bottom:22%;animation-duration:10s;opacity:.5}
+.fx-ring{position:absolute;right:6%;top:30%;width:300px;height:300px;border:2px dashed rgba(36,28,0,.28);border-radius:50%;animation:fx-spin 40s linear infinite;pointer-events:none}
+.fx-stage{position:relative;height:240px;z-index:2;transition:transform .15s ease-out}
+.fx-inv{position:absolute;width:262px;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 14px 30px -12px rgba(36,28,0,.4);animation:fx-bob 5s ease-in-out infinite}
+.fx-inv:nth-child(1){left:2%;top:6px}.fx-inv:nth-child(2){left:36%;top:76px;animation-delay:-1.6s}.fx-inv:nth-child(3){left:12%;top:146px;animation-delay:-3.2s}
+.fx-inv b{display:block;font-size:13px;color:#7A6F4A;font-weight:500}
+.fx-inv div{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.fx-inv strong{font:800 21px 'Bricolage Grotesque',sans-serif;color:#241C00}
+.fx-pill{font-size:12px;font-weight:700;padding:4px 11px;border-radius:99px;transition:background .4s,color .4s}
+.fx-pill.draft{background:#EEE;color:#666}.fx-pill.confirmed{background:#FFF6CC;color:#8A6A00}.fx-pill.paid{background:#DDF5E6;color:#2E9E5B}
+.fx-stats{position:relative;z-index:3;display:flex;gap:28px;align-items:flex-end;font-size:14px;color:#4a3d00}
+.fx-stats span{display:block;font:800 34px 'Bricolage Grotesque',sans-serif;color:#241C00;font-variant-numeric:tabular-nums}
+
+/* ---------------- right: form card ---------------- */
+#auth-view .auth-form-panel{background:#fff;padding:32px}
+#auth-view .auth-form-wrap{width:min(440px,100%);padding:36px;color:var(--ink);background:#fff;
+  border:2px solid var(--line);border-radius:24px;box-shadow:0 30px 60px -30px rgba(201,154,0,.55)}
+#auth-view .auth-form-wrap h2{margin:0 0 8px;font:800 30px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-.5px;color:var(--ink)}
+#auth-view .auth-subtitle{margin:0 0 24px;font-size:15px;line-height:1.5;color:var(--mute)}
+#auth-view .auth-form{gap:18px}
+
+#auth-view .field{gap:7px;position:relative}
+#auth-view .field label{font-size:14px;font-weight:700;color:var(--ink)}
+#auth-view .field input,#auth-view .field select,#auth-view .field textarea{min-height:48px;padding:12px 14px;border:2px solid var(--line);border-radius:var(--r);
+  background:#fff;color:var(--ink);font-size:16px;font-weight:500}
+#auth-view .field input::placeholder{color:#B5A878}
+#auth-view .field input:focus,#auth-view .field select:focus,#auth-view .field textarea:focus{border-color:var(--y);background:#fff;box-shadow:0 0 0 4px rgba(255,196,0,.28)}
+#auth-view .field-hint{font-size:12px;color:var(--mute)}
+
+#auth-view .auth-form .btn,#auth-view .auth-form-wrap .btn-primary{width:100%;margin-top:4px;padding:14px!important;border:0;border-radius:var(--r);
+  font:800 16px 'DM Sans',sans-serif;cursor:pointer;transition:transform .12s,box-shadow .12s,filter .2s}
+#auth-view .auth-form-wrap .btn-primary{background:var(--y);color:var(--ink);box-shadow:0 5px 0 #C99A00;filter:none}
+#auth-view .auth-form-wrap .btn-primary:hover{transform:none;filter:brightness(1.06);box-shadow:0 5px 0 #C99A00}
+#auth-view .auth-form-wrap .btn-primary:active{transform:translateY(4px);box-shadow:0 1px 0 #C99A00}
+#auth-view .auth-form-wrap .btn:disabled{opacity:.7;cursor:wait}
+
+#auth-view .auth-footnote{margin-top:22px;font-size:14px;color:var(--mute)}
+#auth-view .auth-footnote button,#auth-view .text-button,#auth-view .auth-form-wrap a{color:var(--ink);font-weight:700;
+  text-decoration:underline;text-decoration-color:var(--y);text-decoration-thickness:3px;text-underline-offset:3px}
+#auth-view .auth-footnote button:hover,#auth-view .text-button:hover{color:var(--ink);text-decoration-color:var(--ink)}
+
+#auth-view .demo-box{margin-top:22px;padding:14px 16px;border:2px dashed var(--line);border-radius:var(--r);background:var(--y3);color:var(--mute);font-size:13px;line-height:1.7}
+#auth-view .demo-box strong{color:var(--ink);font-size:13px}
+
+/* injected by auth-fx.js */
+.fx-eye{position:absolute;right:6px;bottom:0;height:48px;border:0;background:none;padding:0 10px;cursor:pointer;font:700 13px "DM Sans",sans-serif;color:var(--mute)}
+.fx-meter{height:6px;border-radius:9px;background:var(--line);margin:-6px 0 8px;overflow:hidden}
+.fx-meter i{display:block;height:100%;width:0;background:var(--bad);transition:width .3s,background .3s}
+.fx-rules{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;list-style:none;padding:0;margin:0;font-size:13px;color:var(--mute)}
+.fx-rules li{display:flex;gap:6px;align-items:center;transition:color .2s}
+.fx-rules li::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .25s}
+.fx-rules li.ok{color:var(--ok)}
+.fx-rules li.ok::before{background:var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l3 3 5-6' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center/100%;border-color:var(--ok);transform:scale(1.12)}
+
+@keyframes fx-spin{to{transform:rotate(360deg)}}
+@keyframes fx-bob{50%{transform:translateY(-12px) rotate(.8deg)}}
+@keyframes fx-drift{to{transform:translate(-40px,30px) scale(1.12)}}
+@keyframes fx-shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+@media (max-width:900px){
+  #auth-view:not(.hidden){grid-template-columns:1fr}
+  #auth-view .auth-brand-panel{padding:24px;min-height:0}
+  #auth-view .auth-brand-copy p,.fx-stage,.fx-stats,.fx-ring{display:none}
+  #auth-view .auth-brand-copy h1{font-size:26px}
+}
+@media (max-width:760px){
+  #auth-view .auth-form-wrap{padding:26px 20px;border-radius:18px}
+}
+@media (prefers-reduced-motion:reduce){#auth-view *{animation:none!important;transition:none!important}}
+
+/* ---- matched to app.js markup ---- */
+#auth-view .auth-form-wrap .brand-mark{background:var(--y);color:var(--ink);box-shadow:0 4px 0 #C99A00;border-radius:12px}
+@media (min-width:761px){ #auth-view .auth-form-wrap .brand-lockup{display:none} }   /* hero already shows the logo */
+#auth-view .auth-form-wrap .btn-primary span{display:inline-block;transition:transform .2s}
+#auth-view .auth-form-wrap .btn-primary:hover span{transform:translateX(5px)}
+.fx-rules{margin-bottom:2px}
+.auth-form.fx-shake{animation:fx-shake .4s}
+/* demo credential chips (built by auth-fx.js) */
+.fx-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.fx-chips button{border:2px solid var(--line);background:#fff;border-radius:99px;padding:7px 15px;font:700 13px 'DM Sans',sans-serif;color:var(--ink);cursor:pointer;transition:all .2s}
+.fx-chips button:hover{border-color:var(--y);background:var(--y2);transform:translateY(-2px)}

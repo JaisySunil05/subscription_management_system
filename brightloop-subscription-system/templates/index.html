@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <meta name="theme-color" content="#10243a">
+  <title>Brightloop — Subscription Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div id="auth-view" class="auth-layout">
+    <section class="auth-brand-panel">
+      <div class="brand-lockup light-brand"><span class="brand-mark">B</span><span>brightloop</span></div>
+      <div class="auth-brand-copy">
+        <div class="eyebrow">SUBSCRIPTION OPERATIONS, SIMPLIFIED</div>
+        <h1>Every plan.<br>Every payment.<br><span>One clear view.</span></h1>
+        <p>Manage subscriptions, recurring billing and customer relationships from one connected workspace.</p>
+      </div>
+      <div class="brand-footer">BRIGHTLOOP SOFTWARE <span>•</span> BILLING WORKSPACE</div>
+    </section>
+    <section class="auth-form-panel">
+      <div class="auth-form-wrap" id="auth-form-wrap"></div>
+    </section>
+  </div>
+
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-lockup"><span class="brand-mark">B</span><span>brightloop</span></div>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav id="main-nav" class="main-nav"></nav>
+      <div class="sidebar-bottom">
+        <div class="secure-note"><span class="secure-dot"></span><span>Workspace protected</span></div>
+        <div class="sidebar-user" id="sidebar-user"></div>
+      </div>
+    </aside>
+
+    <main class="main-shell">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu icon-button" id="mobile-menu" aria-label="Open menu">☰</button>
+          <div><div class="topbar-kicker" id="topbar-kicker">OVERVIEW</div><h2 id="page-title">Dashboard</h2></div>
+        </div>
+        <div class="topbar-actions">
+          <div class="today-label" id="today-label"></div>
+          <div class="top-user"><div class="avatar" id="top-avatar">B</div><div><strong id="top-name">Brightloop Admin</strong><small id="top-role">Administrator</small></div></div>
+        </div>
+      </header>
+      <section id="page" class="page-content"></section>
+    </main>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

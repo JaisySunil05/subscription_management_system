@@ -152,23 +152,51 @@ def password_serializer():
 
 
 def send_email(to_address, subject, body):
+    """Send an email through the SMTP account configured in the environment."""
     server = os.getenv("MAIL_SERVER", "").strip()
+    username = os.getenv("MAIL_USERNAME", "").strip()
+    password = os.getenv("MAIL_PASSWORD", "").strip().replace(" ", "")
+    sender = os.getenv("MAIL_DEFAULT_SENDER", "").strip() or username
+
     if not server:
-        app.logger.warning("SMTP is not configured. Development email to %s:\n%s", to_address, body)
-        return False
+        raise RuntimeError("Email delivery is not configured: MAIL_SERVER is empty.")
+
+    # Gmail SMTP requires an authenticated account and a Google App Password
+    # when using SMTP username/password authentication.
+    if server.lower() == "smtp.gmail.com" and (not username or not password):
+        raise RuntimeError("Gmail SMTP requires MAIL_USERNAME and a Google App Password in MAIL_PASSWORD.")
+
+    if username and not password:
+        raise RuntimeError("MAIL_PASSWORD is required when MAIL_USERNAME is configured.")
+
+    try:
+        port = int(os.getenv("MAIL_PORT", "587"))
+    except ValueError as exc:
+        raise RuntimeError("MAIL_PORT must be a valid port number.") from exc
+
+    use_tls = os.getenv("MAIL_USE_TLS", "true").strip().lower() in ("1", "true", "yes", "on")
+    if server.lower() == "smtp.gmail.com" and not use_tls:
+        raise RuntimeError("Gmail SMTP must use TLS. Set MAIL_USE_TLS=true.")
+
     message = EmailMessage()
     message["Subject"] = subject
-    message["From"] = os.getenv("MAIL_DEFAULT_SENDER", "Brightloop Billing <no-reply@example.com>")
+    message["From"] = sender
     message["To"] = to_address
     message.set_content(body)
-    port = int(os.getenv("MAIL_PORT", "587"))
-    with smtplib.SMTP(server, port, timeout=15) as smtp:
-        if os.getenv("MAIL_USE_TLS", "true").lower() == "true":
+
+    # STARTTLS encrypts the connection before SMTP credentials are sent.
+    with smtplib.SMTP(server, port, timeout=20) as smtp:
+        smtp.ehlo()
+        if use_tls:
             smtp.starttls()
-        username = os.getenv("MAIL_USERNAME", "")
+            smtp.ehlo()
         if username:
-            smtp.login(username, os.getenv("MAIL_PASSWORD", ""))
-        smtp.send_message(message)
+            smtp.login(username, password)
+        refused = smtp.send_message(message)
+        if refused:
+            raise RuntimeError("The SMTP server refused one or more email recipients.")
+
+    app.logger.info("Email delivered through configured SMTP server.")
     return True
 
 
@@ -542,14 +570,21 @@ def forgot_password():
     # Same response whether the address exists or not, to avoid account enumeration.
     if user:
         token = password_serializer().dumps({"uid": user.id, "email": user.email})
-        reset_url = f"{os.getenv('APP_BASE_URL', request.url_root.rstrip('/'))}/?reset={token}"
+        base_url = os.getenv("APP_BASE_URL", "").strip().rstrip("/") or request.url_root.rstrip("/")
+        reset_url = f"{base_url}/?reset={token}"
+        message_body = (
+            f"Hello {user.name},\n\n"
+            "We received a request to reset your Brightloop password.\n\n"
+            f"Reset your password using this link (valid for 60 minutes):\n{reset_url}\n\n"
+            "If you did not request a password reset, you can ignore this email. "
+            "Your password will not change unless the link is used.\n\n"
+            "Brightloop Support"
+        )
         try:
-            sent = send_email(user.email, "Reset your Brightloop password",
-                              f"Use this one-time link within 60 minutes to reset your password:\n\n{reset_url}\n\nIf you did not request this, ignore this email.")
-            if not sent and app.config["DEBUG"]:
-                app.logger.info("Development password reset link: %s", reset_url)
+            send_email(user.email, "Reset your Brightloop password", message_body)
         except Exception:
-            app.logger.exception("Password reset email failed")
+            # Do not expose whether an account exists, or put reset tokens in logs.
+            app.logger.exception("Password reset email delivery failed. Check SMTP configuration.")
     return jsonify({"message": "If an account exists for that email, password reset instructions have been sent."})
 
 

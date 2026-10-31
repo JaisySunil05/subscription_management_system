@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <!-- Login theme (white + yellow). Must load after styles.css -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app-theme.css') }}">
 </head>
 <body>
 
@@ -107,5 +108,6 @@
   <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
   <!-- Login animations and password checklist. Loads after app.js -->
   <script src="{{ url_for('static', filename='js/auth-fx.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/app-fx.js') }}" defer></script>
 </body>
 </html>

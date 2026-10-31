@@ -1,0 +1,180 @@
+/* Brightloop app theme: white + yellow (matches the login page).
+   Loads AFTER styles.css and auth-theme.css. Overrides only; no class names are renamed.
+   Scoped to #app-shell, #modal-root and #toast-root, so the login screen is untouched. */
+
+:root{color-scheme:light;--y:#FFC400;--y2:#FFE066;--y3:#FFF6CC;--yd:#C99A00;
+  --ink:#241C00;--muted:#6B5F38;--muted-2:#8A7E55;--line:#EFE5B8;--canvas:#FFFCF0;--white:#fff;
+  --navy:#FFF6CC;--navy-2:#FFE066;--teal:#FFC400;--teal-dark:#C99A00;--teal-soft:rgba(255,196,0,.2);
+  --blue:#8A6A00;--blue-soft:#FFF6CC;--orange:#B26A00;--orange-soft:#FFF1D6;
+  --red:#D63A2F;--red-soft:#FDECEA;--green:#1F7A45;--green-soft:#E3F6EA;
+  --shadow:0 18px 40px -22px rgba(201,154,0,.55);font-family:'DM Sans',system-ui,sans-serif}
+html{background:var(--canvas)}
+body{background:var(--canvas);color:var(--ink)}
+::selection{background:var(--y);color:var(--ink)}
+:is(#app-shell,#modal-root) :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* ---------------- sidebar ---------------- */
+#app-shell .sidebar{background:#fff;color:var(--ink);border-right:2px solid var(--line);overflow:hidden}
+#app-shell .sidebar::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:var(--y2);opacity:.35;left:-100px;bottom:-80px;pointer-events:none;animation:ap-drift 14s ease-in-out infinite alternate}
+#app-shell .sidebar>*{position:relative}
+:is(#app-shell .sidebar,#modal-root) .brand-lockup{color:var(--ink);gap:10px;font:800 24px 'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.5px}
+/* the "B" tile becomes the spinning loop icon from the login page (sidebar, invoice modal, mobile sign-in) */
+:is(#app-shell,#modal-root,#auth-view .auth-form-wrap) .brand-mark{width:36px;height:36px;border-radius:0;font-size:0;color:transparent;box-shadow:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='15' fill='none' stroke='%23241C00' stroke-width='5' stroke-dasharray='70 24' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='5' r='4' fill='%23fff' stroke='%23241C00' stroke-width='2.5'/%3E%3C/svg%3E") center/contain no-repeat;
+  animation:ap-spin 9s linear infinite}
+#app-shell .sidebar-plan-chip{color:var(--muted);background:var(--y3);border:1px solid var(--line);font-size:10px}
+#app-shell .workspace-label,#app-shell .nav-section{color:var(--muted);font-size:11px;letter-spacing:.14em;font-weight:700}
+#app-shell .main-nav{scrollbar-color:var(--y2) transparent}
+#app-shell .nav-link{color:var(--ink);font-size:14px;font-weight:500;border-radius:14px;padding:11px 13px}
+#app-shell .nav-link:hover{color:var(--ink);background:var(--y3);border-color:transparent;transform:translateX(4px)}
+#app-shell .nav-link.active{color:var(--ink);font-weight:700;background:var(--y);border-color:transparent;box-shadow:0 4px 0 var(--yd);transform:none}
+#app-shell .secure-note{color:var(--muted);font-size:12px;border-color:var(--line)}
+#app-shell .secure-dot{background:#2E9E5B;box-shadow:0 0 0 0 rgba(46,158,91,.5);animation:ap-pulse 2s infinite}
+#app-shell .sidebar-user strong{color:var(--ink);font-size:13px}
+#app-shell .sidebar-user small{color:var(--muted);font-size:11px}
+#app-shell .sidebar-user button,#app-shell .sidebar-user .admin-logout-button{color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:10px;font-size:12px;font-weight:700;padding:8px 12px}
+#app-shell .sidebar-user button:hover,#app-shell .sidebar-user .admin-logout-button:hover{color:var(--ink);background:var(--y3);border-color:var(--y)}
+
+/* ---------------- topbar ---------------- */
+#app-shell .topbar{background:rgba(255,252,240,.88);border-bottom:2px solid var(--line);transition:box-shadow .25s}
+#app-shell .topbar.scrolled{box-shadow:0 12px 24px -18px rgba(201,154,0,.7)}
+#app-shell .topbar-kicker{color:var(--muted);font-size:11px;letter-spacing:.14em;font-weight:700}
+#app-shell .topbar h2{color:var(--ink);font-family:'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.5px}
+#app-shell .today-label{color:var(--muted);font-size:13px}
+#app-shell .top-user{border-left:2px solid var(--line)}
+#app-shell .top-user strong{color:var(--ink);font-size:13px}
+#app-shell .top-user small{color:var(--muted);font-size:11px}
+#app-shell .avatar{color:var(--ink);background:var(--y);border:0;border-radius:13px;box-shadow:0 3px 0 var(--yd);font-family:'Bricolage Grotesque',sans-serif}
+#app-shell .top-logout span{color:var(--ink)}
+#app-shell .icon-button{color:var(--ink);background:#fff;border:2px solid var(--line)}
+@media (min-width:761px){
+  #app-shell .topbar h2{font-size:26px}
+  #app-shell .avatar{width:40px;height:40px}
+}
+
+/* ---------------- buttons and fields ---------------- */
+:is(#app-shell,#modal-root) .btn{font-size:13px;border-radius:12px;padding:11px 17px}
+:is(#app-shell,#modal-root) .btn-primary{color:var(--ink);background:var(--y);border:0;box-shadow:0 4px 0 var(--yd);filter:none}
+:is(#app-shell,#modal-root) .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 5px 0 var(--yd)}
+:is(#app-shell,#modal-root) .btn-primary:active{transform:translateY(3px);box-shadow:0 1px 0 var(--yd)}
+:is(#app-shell,#modal-root) .btn-secondary{color:var(--ink);background:#fff;border:2px solid var(--line)}
+:is(#app-shell,#modal-root) .btn-secondary:hover{color:var(--ink);background:var(--y3);border-color:var(--y);transform:translateY(-1px)}
+:is(#app-shell,#modal-root) .btn-danger{color:var(--red);background:var(--red-soft);border:2px solid rgba(214,58,47,.28)}
+:is(#app-shell,#modal-root) .btn-danger:hover{background:#FADBD7}
+:is(#app-shell,#modal-root) .btn-small{padding:6px 11px;font-size:12px;border-radius:9px}
+:is(#app-shell,#modal-root) .field label{color:var(--ink);font-size:13px}
+:is(#app-shell,#modal-root) :is(.field input,.field select,.field textarea,.search-input,.filter-select){min-height:44px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:12px;font-size:15px}
+:is(#app-shell,#modal-root) :is(.field input,.field textarea,.search-input)::placeholder{color:#B5A878}
+:is(#app-shell,#modal-root) :is(.field input,.field select,.field textarea,.search-input,.filter-select):focus{background:#fff;border-color:var(--y);box-shadow:0 0 0 4px rgba(255,196,0,.28)}
+:is(#app-shell,#modal-root) .field input:disabled{color:var(--muted);background:var(--y3)}
+:is(#app-shell,#modal-root) .field-hint{color:var(--muted);font-size:12px}
+:is(#app-shell,#modal-root) .check-row{color:var(--ink);font-size:13px}
+:is(#app-shell,#modal-root) .check-row input{accent-color:var(--ink)}
+#app-shell .search-symbol{color:var(--muted);top:12px}
+
+/* text buttons such as "View all" */
+#app-shell .text-button{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--y);text-decoration-thickness:3px;text-underline-offset:3px}
+#app-shell .text-button:hover{color:var(--ink);text-decoration-color:var(--ink)}
+
+/* ---------------- headings, dashboard greeting ---------------- */
+#app-shell .page-heading h3{color:var(--ink);font-family:'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.5px}
+#app-shell .page-heading p{color:var(--muted);font-size:14px}
+body.on-dash #page .page-heading:first-child{position:relative;overflow:hidden;align-items:center;padding:28px 32px;border-radius:24px;background:linear-gradient(160deg,var(--y2),var(--y));animation:ap-rise .6s backwards}
+body.on-dash #page .page-heading:first-child::after{content:"";position:absolute;right:-60px;top:-90px;width:280px;height:280px;border-radius:50%;background:#fff;opacity:.35;pointer-events:none;animation:ap-drift 12s ease-in-out infinite alternate}
+body.on-dash #page .page-heading:first-child::before{content:"";position:absolute;right:150px;top:16px;width:150px;height:150px;border-radius:50%;border:2px dashed rgba(36,28,0,.3);pointer-events:none;animation:ap-spin 30s linear infinite}
+body.on-dash #page .page-heading:first-child>*{position:relative;z-index:1}
+body.on-dash #page .page-heading:first-child p{color:#4a3d00}
+body.on-dash #page .page-heading:first-child .btn-primary{color:#fff;background:var(--ink);box-shadow:0 4px 0 #000}
+@media (min-width:761px){body.on-dash #page .page-heading:first-child h3{font-size:34px;letter-spacing:-.8px}}
+
+/* ---------------- cards, KPIs, panels ---------------- */
+:is(#app-shell,#modal-root) :is(.card,.kpi-card,.panel,.report-stat,.table-card){color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:20px;box-shadow:none}
+#app-shell :is(.kpi-card,.panel,.report-stat){animation:ap-rise .6s backwards}
+#app-shell .kpi-card:nth-child(2){animation-delay:.08s}#app-shell .kpi-card:nth-child(3){animation-delay:.16s}#app-shell .kpi-card:nth-child(4){animation-delay:.24s}
+#app-shell .report-stat:nth-child(2){animation-delay:.08s}#app-shell .report-stat:nth-child(3){animation-delay:.16s}#app-shell .report-stat:nth-child(4){animation-delay:.24s}
+#app-shell .panel:nth-child(2){animation-delay:.12s}
+#app-shell :is(.kpi-card,.panel):hover{transform:translateY(-6px);border-color:var(--y);box-shadow:0 22px 34px -22px rgba(201,154,0,.7)}
+#app-shell .kpi-card::after{background:rgba(255,196,0,.14)}
+#app-shell .kpi-top{color:var(--ink);font-size:13px;font-weight:700}
+#app-shell .kpi-icon{color:var(--ink);background:var(--y3);border:0;border-radius:11px;width:36px;height:36px;transition:transform .4s,background .2s}
+#app-shell .kpi-card:hover .kpi-icon{background:var(--y);transform:rotate(-12deg) scale(1.1)}
+#app-shell .kpi-value,#app-shell .report-stat strong{color:var(--ink);font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-variant-numeric:tabular-nums}
+#app-shell .kpi-foot,#app-shell .report-stat small{color:var(--muted);font-size:12px}
+#app-shell .panel-head h4{color:var(--ink);font-family:'Bricolage Grotesque','DM Sans',sans-serif}
+#app-shell .panel-head p{color:var(--muted);font-size:12px}
+@media (min-width:761px){
+  #app-shell .kpi-value{font-size:32px;letter-spacing:-1px}
+  #app-shell .panel-head h4{font-size:20px;font-weight:800}
+  #app-shell .report-stat strong{font-size:28px}
+}
+
+/* ---------------- chart and recent list ---------------- */
+#app-shell .trend-chart{border-bottom:2px solid var(--line)}
+#app-shell .chart-bar{background:linear-gradient(180deg,var(--y2),var(--y));box-shadow:none;border-radius:9px 9px 3px 3px;transform-origin:bottom;
+  transition:height .65s cubic-bezier(.2,.7,.2,1),background .2s;animation:ap-grow .9s cubic-bezier(.4,1.6,.5,1) backwards}
+#app-shell .chart-column:nth-child(1) .chart-bar{animation-delay:.3s}#app-shell .chart-column:nth-child(2) .chart-bar{animation-delay:.4s}
+#app-shell .chart-column:nth-child(3) .chart-bar{animation-delay:.5s}#app-shell .chart-column:nth-child(4) .chart-bar{animation-delay:.6s}
+#app-shell .chart-column:nth-child(5) .chart-bar{animation-delay:.7s}#app-shell .chart-column:nth-child(6) .chart-bar{animation-delay:.8s}
+#app-shell .chart-column:hover .chart-bar{background:var(--ink)}
+#app-shell .chart-label{color:var(--muted);font-size:12px}
+#app-shell .chart-value{color:var(--ink);font-size:11px;font-weight:700}
+#app-shell .recent-row{border-bottom:2px solid var(--line);border-radius:12px;transition:background .2s,padding .2s}
+#app-shell .recent-row:hover{background:var(--y3);padding-left:10px;padding-right:10px}
+#app-shell .recent-primary,#app-shell .recent-amount{color:var(--ink);font-size:13px}
+#app-shell .recent-secondary{color:var(--muted);font-size:12px}
+
+/* ---------------- status pills (same palette as the login hero) ---------------- */
+:is(#app-shell,#modal-root) .status{color:#555;background:#EEE;font-size:11px;padding:5px 11px;font-weight:700;transition:background .3s,color .3s}
+:is(#app-shell,#modal-root) :is(.status.draft){color:#555;background:#EEE}
+:is(#app-shell,#modal-root) :is(.status.confirmed,.status.quotation){color:#8A6A00;background:var(--y3)}
+:is(#app-shell,#modal-root) :is(.status.active,.status.paid){color:var(--green);background:#DDF5E6}
+:is(#app-shell,#modal-root) :is(.status.paused,.status.pending){color:var(--orange);background:var(--orange-soft)}
+:is(#app-shell,#modal-root) :is(.status.closed,.status.cancelled){color:#6B6B6B;background:#EFEFEF}
+:is(#app-shell,#modal-root) .status.overdue{color:var(--red);background:var(--red-soft)}
+
+/* ---------------- tables ---------------- */
+#app-shell .table-toolbar{background:#FFFAE0;border-bottom:2px solid var(--line)}
+:is(#app-shell,#modal-root) th{color:var(--muted);background:var(--y3);font-size:11px}
+:is(#app-shell,#modal-root) td{color:var(--ink);border-top:2px solid var(--line);font-size:13px}
+:is(#app-shell,#modal-root) td strong{color:var(--ink);font-size:13px}
+:is(#app-shell,#modal-root) .table-sub{color:var(--muted);font-size:11px}
+#app-shell tbody tr:hover{background:#FFFAE0}
+#app-shell tbody tr{animation:ap-rise .35s backwards}
+#app-shell tbody tr:nth-child(2){animation-delay:.04s}#app-shell tbody tr:nth-child(3){animation-delay:.08s}#app-shell tbody tr:nth-child(4){animation-delay:.12s}
+#app-shell tbody tr:nth-child(5){animation-delay:.16s}#app-shell tbody tr:nth-child(6){animation-delay:.2s}#app-shell tbody tr:nth-child(7){animation-delay:.24s}
+#app-shell tbody tr:nth-child(n+8){animation-delay:.28s}
+#app-shell .table-footer{color:var(--muted);background:#FFFAE0;border-top:2px solid var(--line);font-size:12px}
+#app-shell .empty-state{color:var(--muted)}
+#app-shell .empty-state strong{color:var(--ink);font-size:15px}
+#app-shell .empty-state p{font-size:13px}
+#app-shell .empty-state .empty-icon{display:inline-block;animation:ap-bob 4s ease-in-out infinite}
+#app-shell .loading{color:var(--muted);font-size:13px}
+#app-shell .loading::before{content:"";display:block;width:26px;height:26px;margin:0 auto 12px;border:4px solid var(--line);border-top-color:var(--y);border-radius:50%;animation:ap-spin .8s linear infinite}
+
+/* ---------------- portal banner, info strip, invoice totals ---------------- */
+#app-shell .portal-banner{color:var(--ink);background:linear-gradient(160deg,var(--y2),var(--y));border:0;border-radius:24px;box-shadow:none}
+#app-shell .portal-banner h3{color:var(--ink);font-family:'Bricolage Grotesque',sans-serif}
+#app-shell .portal-banner p{color:#4a3d00;font-size:13px}
+#app-shell .portal-banner .portal-mark{color:var(--ink)}
+#app-shell .info-strip{color:var(--muted);background:var(--y3);border:2px solid var(--line);border-radius:14px;font-size:13px}
+:is(#app-shell,#modal-root) .invoice-total{border-top:2px solid var(--line)}
+:is(#app-shell,#modal-root) .invoice-total div{color:var(--muted);font-size:13px}
+:is(#app-shell,#modal-root) .invoice-total .grand{color:var(--ink);font-size:17px}
+
+/* ---------------- modal and toast ---------------- */
+#modal-root .modal-backdrop{background:rgba(36,28,0,.45)}
+#modal-root .modal{color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:24px;box-shadow:0 30px 60px -30px rgba(201,154,0,.7);animation:ap-pop .35s cubic-bezier(.4,1.5,.5,1)}
+#modal-root .modal-header,#modal-root .modal-footer{border-color:var(--line);border-width:2px}
+#modal-root .modal-header h3{color:var(--ink);font:800 20px 'Bricolage Grotesque','DM Sans',sans-serif}
+#modal-root .modal-header p{color:var(--muted);font-size:12px}
+#toast-root .toast{color:var(--ink);background:#fff;border:2px solid var(--line);border-left:6px solid var(--y);border-radius:14px;box-shadow:var(--shadow);font-size:14px}
+#toast-root .toast.error{color:#8f241b;background:var(--red-soft);border-color:rgba(214,58,47,.35);border-left-color:var(--red)}
+
+@keyframes ap-spin{to{transform:rotate(360deg)}}
+@keyframes ap-drift{to{transform:translate(-40px,30px) scale(1.12)}}
+@keyframes ap-rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes ap-grow{from{transform:scaleY(0)}}
+@keyframes ap-bob{50%{transform:translateY(-8px)}}
+@keyframes ap-pop{from{opacity:0;transform:scale(.92) translateY(10px)}}
+@keyframes ap-pulse{70%{box-shadow:0 0 0 8px rgba(46,158,91,0)}100%{box-shadow:0 0 0 0 rgba(46,158,91,0)}}
+@media print{body{background:#fff}}

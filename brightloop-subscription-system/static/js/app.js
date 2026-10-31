@@ -191,8 +191,23 @@
       $('#sidebar').classList.remove('mobile-open');
       navigate(link.dataset.page);
     }));
-    $('#sidebar-user').innerHTML = `<div><strong>${esc(user.name)}</strong><small>${esc(roleLabel(user.role))}</small></div><button id="logout-button" title="Sign out" aria-label="Sign out">↪</button>`;
-    $('#logout-button').addEventListener('click', logout);
+    
+//change
+    const logoutControl = user.role === 'admin'
+  ? `<button id="logout-button" class="admin-logout-button" type="button">Logout</button>`
+  : `<button id="logout-button" title="Sign out" aria-label="Sign out">↪</button>`;
+
+$('#sidebar-user').innerHTML = `
+  <div>
+    <strong>${esc(user.name)}</strong>
+    <small>${esc(roleLabel(user.role))}</small>
+  </div>
+  ${logoutControl}
+`;
+
+$('#logout-button').addEventListener('click', logout);
+
+//change
     $('#top-name').textContent = user.name;
     $('#top-role').textContent = roleLabel(user.role);
     $('#top-avatar').textContent = (user.name || 'B').trim().charAt(0).toUpperCase();
